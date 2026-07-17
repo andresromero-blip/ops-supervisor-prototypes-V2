@@ -1,66 +1,60 @@
-import Link from 'next/link'
+import Link from "next/link";
+import Sidebar from "@/components/Sidebar";
 
-const projects = [
+const PROJECTS = [
   {
-    href: '/projects/20260620-team-overview',
-    title: 'Team Overview',
-    subtitle: 'team performance dashboard',
-    desc: 'Prioritized critical alerts, KPIs grouped by category, period filters and key team topics.',
+    group: "Performance",
+    items: [
+      { slug: "20260620-team-overview", title: "Team Overview", description: "KPI strip, agent interaction with trends chart, and key team topics by priority." },
+      { slug: "20260620-agent-view",    title: "Agent View",    description: "Individual performance with KPI Evolution — now includes QTD trend view." },
+      { slug: "20260620-one-to-one",    title: "One to One",    description: "Coaching workspace: KPI → storyline → facts → session record. Period from global header." },
+    ],
   },
   {
-    href: '/projects/20260620-agent-view',
-    title: 'Agent View',
-    subtitle: 'individual performance view',
-    desc: 'Agent selector, grouped KPIs and contextual coaching plan with QTD trend support.',
+    group: "Execution",
+    items: [
+      { slug: "20260620-game-plan", title: "Game Plan", description: "Weekly calendar with daily timeline. Add Event now includes an Additional Context field." },
+      { slug: "20260620-dsm",       title: "DSM",       description: "Open commitments expanded by default. Explicit status badges: Overdue, Due today, Due soon, Pending." },
+    ],
   },
   {
-    href: '/projects/20260620-one-to-one',
-    title: 'One to One',
-    subtitle: 'coaching & development dashboard',
-    desc: 'KPI cards with actionable action badges, deep dive with trend chart, facts and storyline.',
+    group: "Development",
+    items: [
+      { slug: "20260620-cedp", title: "CEDP", description: "Employee development plan — now under Development in the sidebar." },
+    ],
   },
-  {
-    href: '/projects/20260620-game-plan',
-    title: 'Game Plan',
-    subtitle: 'supervisor weekly planner',
-    desc: 'Compact weekly calendar with a master-detail daily timeline and team facts grouped by severity.',
-  },
-  {
-    href: '/projects/20260620-dsm',
-    title: 'DSM',
-    subtitle: 'daily supervisor meeting',
-    desc: 'Pending actions expanded by default with explicit status badges and clear action hierarchy.',
-  },
-  {
-    href: '/projects/20260620-cedp',
-    title: 'CEDP',
-    subtitle: 'continuous employee development',
-    desc: 'Employee development plan overview and tracking.',
-  },
-]
+];
 
 export default function Home() {
   return (
-    <div style={{ maxWidth: 760, margin: '0 auto', paddingTop: 20 }}>
-      <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 4 }}>OPS.Supervisor</h1>
-        <p style={{ fontSize: 13, color: '#6b7280' }}>UX prototypes — v2 iterations</p>
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-        {projects.map((p) => (
-          <Link key={p.href} href={p.href} style={{ textDecoration: 'none' }}>
-            <div className="card" style={{ cursor: 'pointer', transition: 'border-color 0.15s', borderColor: '#e5e7eb' }}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = '#54B282')}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = '#e5e7eb')}
-            >
-              <div style={{ fontSize: 13, fontWeight: 600, color: '#111', marginBottom: 2 }}>
-                {p.title} <span style={{ fontWeight: 400, color: '#9ca3af', fontSize: 11 }}>— {p.subtitle}</span>
+    <div className="flex bg-bg min-h-screen">
+      <Sidebar />
+      <main className="flex-1 text-text-primary font-sans px-6 py-12">
+        <div className="max-w-2xl mx-auto">
+          <p className="text-sm text-text-secondary mb-1">OPS.Supervisor</p>
+          <h1 className="text-3xl font-medium mb-8">UX prototypes</h1>
+
+          <div className="flex flex-col gap-6">
+            {PROJECTS.map((g) => (
+              <div key={g.group}>
+                <p className="text-[11px] uppercase tracking-widest text-text-tertiary mb-2 font-semibold">{g.group}</p>
+                <div className="flex flex-col gap-2">
+                  {g.items.map((p) => (
+                    <Link
+                      key={p.slug}
+                      href={`/projects/${p.slug}`}
+                      className="block border border-border rounded-lg px-5 py-4 bg-surface hover:border-brand transition-colors"
+                    >
+                      <p className="font-medium text-sm mb-1">{p.title}</p>
+                      <p className="text-sm text-text-secondary m-0">{p.description}</p>
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <div style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.5 }}>{p.desc}</div>
-            </div>
-          </Link>
-        ))}
-      </div>
+            ))}
+          </div>
+        </div>
+      </main>
     </div>
-  )
+  );
 }
